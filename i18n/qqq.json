@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiMANNia"
+		]
+	},
+	"donatebutton-msg": "DonateButton",
+	"donatebutton-desc": "{{desc|name=DonateButton|url=https://www.mediawiki.org/wiki/Extension:DonateButton}}"
+}

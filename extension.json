@@ -1,0 +1,45 @@
+{
+	"name": "DonateButton",
+	"author": "WikiMANNia",
+	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
+	"license-name": "GPL-2.0-or-later",
+	"version": "1.0.0",
+	"namemsg": "donatebutton-msg",
+	"descriptionmsg": "donatebutton-desc",
+	"config": {
+		"DonateButtonFilename": "Donate_Button.gif"
+	},
+	"manifest_version": 1,
+	"type": "other",
+	"AutoloadClasses": {
+		"DonateButtonHooks": "includes/specials/HooksDonateButton.php"
+	},
+	"Hooks": {
+	    "BeforePageDisplay": "DonateButtonHooks::onBeforePageDisplay",
+		"SkinBuildSidebar": "DonateButtonHooks::onSkinBuildSidebar"
+	},
+	"MessagesDirs": {
+		"DonateButton": [ "i18n" ]
+	},
+	"ResourceModules": {
+		"ext.donatebutton.common": {
+			"styles": "css/Common.css"
+		},
+		"ext.donatebutton.cologneblue": {
+			"styles": "css/CologneBlue.css"
+		},
+		"ext.donatebutton.modern": {
+			"styles": "css/Modern.css"
+		},
+		"ext.donatebutton.monobook": {
+			"styles": "css/MonoBook.css"
+		},
+		"ext.donatebutton.vector": {
+			"styles": "css/Vector.css"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteExtPath": "DonateButton/resources"
+	}
+}

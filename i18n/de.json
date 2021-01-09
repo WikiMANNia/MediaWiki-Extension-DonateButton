@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiMANNia"
+		]
+	},
+	"donatebutton-msg": "Schaltfläche „Spenden“",
+	"donatebutton-desc": "Fügt eine Schaltfläche „Spenden“ in der Navigationsleisten hinzu",
+	"donatebutton": "Wir bitten um",
+	"lang": "de"
+}
