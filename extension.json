@@ -3,11 +3,12 @@
 	"author": "WikiMANNia",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
 	"config": {
-		"DonateButtonFilename": "Donate_Button.gif"
+		"DonateButton": false,
+		"DonateButtonLangArray": "de, en, es, fr, it, ru"
 	},
 	"manifest_version": 1,
 	"type": "other",
@@ -26,13 +27,19 @@
 			"styles": "css/Common.css"
 		},
 		"ext.donatebutton.cologneblue": {
-			"styles": "css/CologneBlue.css"
+			"styles": "css/Cologneblue.css"
+		},
+		"ext.donatebutton.mobile": {
+			"styles": "css/Mobile.css"
+		},
+		"ext.donatebutton.minerva": {
+			"styles": "css/Minerva.css"
 		},
 		"ext.donatebutton.modern": {
 			"styles": "css/Modern.css"
 		},
 		"ext.donatebutton.monobook": {
-			"styles": "css/MonoBook.css"
+			"styles": "css/Monobook.css"
 		},
 		"ext.donatebutton.vector": {
 			"styles": "css/Vector.css"
