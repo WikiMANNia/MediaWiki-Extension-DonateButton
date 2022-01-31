@@ -1,7 +1,5 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
-
 class DonateButtonHooks extends Hooks {
 
 	/**
@@ -16,6 +14,7 @@ class DonateButtonHooks extends Hooks {
 
 		$skinname = $skin->getSkinName();
 		$out->addModuleStyles( 'ext.donatebutton.common' );
+		$out->addModuleStyles( 'ext.donatebutton.mobile' );
 		if ( self::isSupported( $skinname ) ) {
 			$out->addModuleStyles( 'ext.donatebutton.' . $skinname );
 		} else {
@@ -36,16 +35,24 @@ class DonateButtonHooks extends Hooks {
 
 		if ( !self::isActive() )  return;
 
-		global $wgDonateButton, $wgDonateButtonFilename, $wgDonateButtonURL;
+		global $wgDonateButton, $wgDonateButtonURL;
 		global $wgLanguageCode, $wgVersion;
 
 		if ( !empty( $wgDonateButton ) &&
-			!empty( $wgDonateButtonFilename ) &&
 			!empty( $wgDonateButtonURL ) &&
 			( ( $wgDonateButton === 'true' ) || ( $wgDonateButton === true ) )
 			) {
 
 			$langCode = ( strlen( $skin->msg( 'lang' )->text() ) === 2 ) ? $skin->msg( 'lang' )->text() : $wgLanguageCode;
+			$titleText = $skin->msg( 'donatebutton-msg' )->text();
+
+			if ( !self::isAviable( $langCode ) ) {
+#				$titleText = "Image for lang '$langCode' not supported!";
+				$langCode = 'en';
+			}
+
+			$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
+			$fileURL = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $langCode . '/Donate_Button.gif';
 
 			// If the passed URL ends with a '=', append the language abbreviation to make the donation page language sensitive.
 			// Wenn die übergebene URL mit einem '=' endet, das Sprachenkürzel anhängen, um die Spendenseite sprachsensitiv zu behandeln.
@@ -53,27 +60,17 @@ class DonateButtonHooks extends Hooks {
 				$wgDonateButtonURL .= $langCode;
 			}
 
-			// Sucht den Dateipfad zum Botton-Bild im hiesigen Wiki
-			$fileTitle = Title::makeTitleSafe( NS_FILE, $wgDonateButtonFilename );
-			$fileObject = version_compare( $wgVersion, '1.35', '<' ) ? wfFindFile( $fileTitle ) : MediaWikiServices::getInstance()->getRepoGroup()->findFile( $fileTitle );
-			$fileURL = ( $fileObject !== false )
-					? $fileObject->getFullUrl()
-					: self::paypalURL( $wgLanguageCode );
-
-			// Ändert den Dateipfad zum Botton-Bild gemäß der Sprachauswahl
-			if ( strcmp( $langCode, $wgLanguageCode ) !== 0 ) {
-				$fileURL = self::paypalURL( $langCode );
-			}
-
 			$html = '<a href="//' . $wgDonateButtonURL .
 					'"><img alt="Donate-Button" title="' .
-					$skin->msg( 'donatebutton-msg' )->text() .
-					'"src="' . $fileURL .
+					$titleText .
+					'" src="' . $fileURL .
 					'" /></a>';
 
 			switch ( $skin->getSkinName() ) {
 				case 'cologneblue' :
 					$html = Html::rawElement( 'div', [ 'class' => 'body' ], $html );
+				break;
+				case 'minerva' :
 				break;
 				case 'modern' :
 				break;
@@ -102,6 +99,18 @@ class DonateButtonHooks extends Hooks {
 	}
 
 	private static function isSupported( $skinname ) {
-		return in_array( $skinname, [ 'cologneblue', 'modern', 'monobook', 'vector' ] );
+		return in_array( $skinname, [ 'cologneblue', 'minerva', 'modern', 'monobook', 'vector' ] );
+	}
+
+	private static function isAviable( $lang ) {
+		global $wgDonateButtonLangArray;
+
+		$langs = explode( ', ', $wgDonateButtonLangArray );
+		$lang_array = [];
+		foreach ( $langs as $_lang ) {
+			$lang_array[] = $_lang;
+		}
+
+		return in_array( $lang, $lang_array );
 	}
 }
