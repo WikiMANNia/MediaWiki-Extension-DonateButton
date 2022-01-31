@@ -7,10 +7,6 @@ Enable the DonateButton. Default is false.
 
 * $wgDonateButton = true;
 
-Specify the file name and type.
-
-* $wgDonateButtonFilename = "Donate_Button.gif";
-
 An image with this name should be uploaded on each wiki of your wikifarm.
 
 Specify the link to a donation page.
@@ -21,7 +17,7 @@ The link is automatically completed by the code of the language selected by the 
 
 ## Localization
 
-The extension is localized for the languages "de", "en", "es", "fr", "it", "nl", "pt" and "ru".
+The extension is localized for the languages "de", "en", "es", "fr", "it", "nl", "pt", and "ru".
 
 ## Support
 
