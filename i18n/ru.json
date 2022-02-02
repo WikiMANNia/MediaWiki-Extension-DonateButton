@@ -6,6 +6,6 @@
 	},
 	"donatebutton-msg": "Кнопка “пожертвования”",
 	"donatebutton-desc": "Добавляет кнопку “Пожертвовать” на боковой панели.",
-	"donatebutton": "Мы просим",
-	"lang": "ru"
+	"donatebutton": "Мы просим о",
+	"donatebutton-donation": "пожертвованиях"
 }
