@@ -3,12 +3,14 @@
 	"author": "WikiMANNia",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
 	"config": {
 		"DonateButton": false,
-		"DonateButtonLangArray": "de, en, es, fr, it, ru"
+		"DonateButtonEnabledPaypal": false,
+		"DonateButtonURL": "https://yourdomain.org/donationpage.php?lang=",
+		"DonateButtonLangArray": "de, en, es, fr, it, pt, ru"
 	},
 	"manifest_version": 1,
 	"type": "other",
