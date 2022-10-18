@@ -7,5 +7,6 @@
 	"donatebutton-msg": "Donate Button",
 	"donatebutton-desc": "Adds a “Donate” button in the sidebar.",
 	"donatebutton": "We ask for",
-	"donatebutton-donation": "donations"
+	"sitesupport": "Donations",
+	"lang": "en"
 }

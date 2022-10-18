@@ -1,13 +1,12 @@
 {
 	"name": "DonateButton",
-	"author": "WikiMANNia",
+	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.2.0",
+	"version": "1.3.0",
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
 	"config": {
-		"DonateButton": false,
 		"DonateButtonEnabledPaypal": false,
 		"DonateButtonURL": "https://yourdomain.org/donationpage.php?lang=",
 		"DonateButtonLangArray": "de, en, es, fr, it, pt, ru"
@@ -31,17 +30,14 @@
 		"ext.donatebutton.cologneblue": {
 			"styles": "css/Cologneblue.css"
 		},
-		"ext.donatebutton.mobile": {
-			"styles": "css/Mobile.css"
-		},
-		"ext.donatebutton.minerva": {
-			"styles": "css/Minerva.css"
-		},
 		"ext.donatebutton.modern": {
 			"styles": "css/Modern.css"
 		},
 		"ext.donatebutton.monobook": {
 			"styles": "css/Monobook.css"
+		},
+		"ext.donatebutton.timeless": {
+			"styles": "css/Timeless.css"
 		},
 		"ext.donatebutton.vector": {
 			"styles": "css/Vector.css"

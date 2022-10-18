@@ -5,6 +5,7 @@
 	width: auto;
 }
 #p-donatebutton .body,
+#p-donatebutton .mw-portlet-body,
 #p-donatebutton .pBody {
 	background-color: transparent;
 	border: 0;

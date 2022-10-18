@@ -13,15 +13,34 @@ class DonateButtonHooks extends Hooks {
 		global $wgVersion;
 
 		if ( !self::isActive() )  return;
-		if ( version_compare( $wgVersion, '1.37', '>=' ) )  return;
 
 		$skinname = $skin->getSkinName();
-		$out->addModuleStyles( 'ext.donatebutton.common' );
-		$out->addModuleStyles( 'ext.donatebutton.mobile' );
-		if ( self::isSupported( $skinname ) ) {
-			$out->addModuleStyles( 'ext.donatebutton.' . $skinname );
-		} else {
-			wfLogWarning( 'Skin ' . $skinname . ' not supported by DonateButton.' . "\n" );
+		switch ( $skinname ) {
+			case 'cologneblue' :
+			case 'modern' :
+			case 'monobook' :
+				if ( version_compare( $wgVersion, '1.37', '<' ) ) {
+					$out->addModuleStyles( 'ext.donatebutton.common' );
+					$out->addModuleStyles( 'ext.donatebutton.' . $skinname );
+				}
+			break;
+			case 'vector' :
+			case 'vector-2022' :
+				if ( version_compare( $wgVersion, '1.35', '<' ) ) {
+					$out->addModuleStyles( 'ext.donatebutton.common' );
+					$out->addModuleStyles( 'ext.donatebutton.vector' );
+				}
+			break;
+			case 'timeless' :
+				$out->addModuleStyles( 'ext.donatebutton.common' );
+				$out->addModuleStyles( 'ext.donatebutton.' . $skinname );
+			break;
+			case 'minerva' :
+			case 'fallback' :
+			break;
+			default :
+				wfLogWarning( 'Skin ' . $skinname . ' not supported by DonateButton.' . "\n" );
+			break;
 		}
 	}
 
@@ -47,8 +66,17 @@ class DonateButtonHooks extends Hooks {
 		// 2. get lang_code
 		$lang_code = $skin->getLanguage()->getCode();
 		if ( !self::isAvailable( $lang_code ) ) {
-#			$title_text = "Image for lang '$lang_code' not supported!";
-			$lang_code = 'en';
+			switch ( $lang_code ) {
+				case 'de-formal' :
+				case 'de-at' :
+				case 'de-ch' :
+				case 'de-formal' :
+					$lang_code = 'de';
+				break;
+				default :
+					$lang_code = 'en';
+				break;
+			}
 		}
 
 		// 3. get URL of image
@@ -58,17 +86,32 @@ class DonateButtonHooks extends Hooks {
 		// 4. get URL of donation page
 		$url_site = $wgDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
-		// 5. get HTML-Snippet
-		$sidebar_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
+		// 5.a) get HTML-Snippet
+		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
 
-		if ( version_compare( $wgVersion, '1.37', '>=' ) ) {
-			$mylink = [
-				'text'   => $skin->msg( 'donatebutton-donation' )->text(),
-				'href'   => $url_site,
-				'id'     => 'n-donatebutton',
-				'active' => ''
-			];
-			$sidebar_element = [ $mylink ];
+		// 5.a) get TEXT-Snippet
+		$txt_element = [
+			'text'   => $skin->msg( 'sitesupport' )->text(),
+			'href'   => $url_site,
+			'id'     => 'n-donatebutton',
+			'active' => true
+		];
+
+		$sidebar_element = $img_element;
+
+		switch ( $skin->getSkinName() ) {
+			case 'cologneblue' :
+			case 'modern' :
+			case 'monobook' :
+				$sidebar_element = ( version_compare( $wgVersion, '1.37', '>=' ) ) ? [ $txt_element ] : $img_element;
+			break;
+			case 'vector' :
+			case 'vector-2022' :
+				$sidebar_element = ( version_compare( $wgVersion, '1.35', '>=' ) ) ? [ $txt_element ] : $img_element;
+			break;
+			default :
+				$sidebar_element = $img_element;
+			break;
 		}
 
 		$bar['donatebutton'] = $sidebar_element;
@@ -117,13 +160,7 @@ class DonateButtonHooks extends Hooks {
 			case 'cologneblue' :
 				$html_code = Html::rawElement( 'div', [ 'class' => 'body' ], $html_code );
 			break;
-			case 'minerva' :
-			break;
-			case 'modern' :
-			break;
-			case 'monobook' :
-			break;
-			case 'vector' :
+			default :
 			break;
 		}
 		return $html_code;
@@ -157,6 +194,6 @@ class DonateButtonHooks extends Hooks {
 	 * Returns true if skin is supported
 	 */
 	private static function isSupported( $skinname ) {
-		return in_array( $skinname, [ 'cologneblue', 'minerva', 'modern', 'monobook', 'vector' ] );
+		return in_array( $skinname, [ 'cologneblue', 'minerva', 'modern', 'monobook', 'timeless', 'vector', 'vector-2022' ] );
 	}
 }
