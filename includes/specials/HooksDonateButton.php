@@ -26,7 +26,7 @@ class DonateButtonHooks extends Hooks {
 			break;
 			case 'vector' :
 			case 'vector-2022' :
-				if ( version_compare( $wgVersion, '1.35', '<' ) ) {
+				if ( version_compare( $wgVersion, '1.37', '<' ) ) {
 					$out->addModuleStyles( 'ext.donatebutton.common' );
 					$out->addModuleStyles( 'ext.donatebutton.vector' );
 				}
@@ -103,11 +103,9 @@ class DonateButtonHooks extends Hooks {
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monobook' :
-				$sidebar_element = ( version_compare( $wgVersion, '1.37', '>=' ) ) ? [ $txt_element ] : $img_element;
-			break;
 			case 'vector' :
 			case 'vector-2022' :
-				$sidebar_element = ( version_compare( $wgVersion, '1.35', '>=' ) ) ? [ $txt_element ] : $img_element;
+				$sidebar_element = ( version_compare( $wgVersion, '1.37', '>=' ) ) ? [ $txt_element ] : $img_element;
 			break;
 			default :
 				$sidebar_element = $img_element;
