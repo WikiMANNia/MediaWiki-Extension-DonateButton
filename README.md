@@ -1,5 +1,16 @@
-# MediaWiki-Extension-DonateButton
-Mediawiki extension for adding a Donation Button into the sidebar
+# MediaWiki DonateButton
+
+Die Pflege der MediaWiki-Erweiterung [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) wird von WikiMANNia verwaltet.
+
+The maintenance of the MediaWiki extension [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) is managed by WikiMANNia.
+
+El mantenimiento de la extensión de MediaWiki [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) está gestionado por WikiMANNia.
+
+## Description
+
+Fügt einen Spenden-Knopf der Navigationsleiste hinzu.
+
+Adds a Donation Button into the [sidebar](https://www.mediawiki.org/wiki/MediaWiki:Sidebar).
 
 ## Configuration options
 
