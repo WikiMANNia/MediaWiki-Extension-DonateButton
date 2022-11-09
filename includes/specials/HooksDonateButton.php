@@ -89,7 +89,7 @@ class DonateButtonHooks extends Hooks {
 		// 5.a) get HTML-Snippet
 		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
 
-		// 5.a) get TEXT-Snippet
+		// 5.b) get TEXT-Snippet
 		$txt_element = [
 			'text'   => $skin->msg( 'sitesupport' )->text(),
 			'href'   => $url_site,
@@ -146,7 +146,7 @@ class DonateButtonHooks extends Hooks {
 	 * Returns HTML-Snippet
 	 */
 	private static function getHtmlSnippet( $skin, $title, $url_site, $url_image ) {
-		$html_pattern = '<a href="//%1$s"><img alt="%2$s" title="%3$s" src="%4$s" /></a>';
+		$html_pattern = '<a href="%1$s"><img alt="%2$s" title="%3$s" src="%4$s" /></a>';
 		$html_code = sprintf( $html_pattern,
 						$url_site,
 						'Donate-Button',
