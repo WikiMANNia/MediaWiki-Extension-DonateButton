@@ -5,7 +5,7 @@
 		]
 	},
 	"donatebutton-msg": "Donate Button",
-	"donatebutton-desc": "Adds a “Donate” button in the sidebar.",
+	"donatebutton-desc": "Adds a “Donate” button to the [https://www.mediawiki.org/wiki/Sidebar sidebar].",
 	"donatebutton": "We ask for",
 	"sitesupport": "Donations",
 	"lang": "en"

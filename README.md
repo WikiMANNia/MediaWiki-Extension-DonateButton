@@ -20,9 +20,9 @@ Enable the DonateButton. Default is `false`.
 
 Specify the link to a donation page.
 
-* `$wgDonateButtonURL = "yourdomain/yourdonationpage.php?lang=";`
+* `$wgDonateButtonURL = "https://yourdomain.org/yourdonationpage.php?lang=";`
 
-The link is automatically completed by the code of the language selected by the user or alternatively by the $wgLanguageCode variable.
+The link is automatically completed by the code of the language selected by the user or alternatively by the `$wgLanguageCode` variable.
 
 ## Localization
 
