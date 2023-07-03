@@ -40,7 +40,8 @@ or
 * `"sitesupport-url": "https://yourdomain.org/en/donationpage.php"`
 
 ## Compatibility
-This extension works from REL1_25 and has been tested up to MediaWiki version `1.39.0-rc.1`.
+
+This extension works from REL1_25 and has been tested up to MediaWiki version `1.39.4`.
 
 The [SkinBuildSidebar](https://www.mediawiki.org/wiki/Manual:Hooks/SkinBuildSidebar) hook of several skins no longer allows images and HTML code to be placed in the sidebar.
 
@@ -74,4 +75,7 @@ For Skins MonoBook and Vector in REL1_35 and REL1_36 see these [Hacks](https://w
 
 * Support for MediaWiki REL1_37+ improved.
 * Support added for Skin "timeless", "fallback", and "vector-2022".
-* Tested with MediaWiki version `1.39.0-rc.1`.
+
+1.3.1
+
+* A customised skin may be used.
