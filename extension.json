@@ -3,7 +3,7 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.3.1",
+	"version": "1.3.2",
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
 	"config": {

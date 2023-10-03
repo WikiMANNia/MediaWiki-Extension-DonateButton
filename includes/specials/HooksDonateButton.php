@@ -19,21 +19,14 @@ class DonateButtonHooks extends Hooks {
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monobook' :
-				if ( version_compare( $wgVersion, '1.37', '<' ) ) {
-					$out->addModuleStyles( 'ext.donatebutton.common' );
-					$out->addModuleStyles( 'ext.donatebutton.' . $skinname );
-				}
-			break;
-			case 'vector' :
-			case 'vector-2022' :
-				if ( version_compare( $wgVersion, '1.37', '<' ) ) {
-					$out->addModuleStyles( 'ext.donatebutton.common' );
-					$out->addModuleStyles( 'ext.donatebutton.vector' );
-				}
-			break;
 			case 'timeless' :
 				$out->addModuleStyles( 'ext.donatebutton.common' );
 				$out->addModuleStyles( 'ext.donatebutton.' . $skinname );
+			break;
+			case 'vector' :
+			case 'vector-2022' :
+				$out->addModuleStyles( 'ext.donatebutton.common' );
+				$out->addModuleStyles( 'ext.donatebutton.vector' );
 			break;
 			case 'minerva' :
 			case 'fallback' :
@@ -86,33 +79,10 @@ class DonateButtonHooks extends Hooks {
 		// 4. get URL of donation page
 		$url_site = $wgDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
-		// 5.a) get HTML-Snippet
+		// 5. get HTML-Snippet
 		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
 
-		// 5.b) get TEXT-Snippet
-		$txt_element = [
-			'text'   => $skin->msg( 'sitesupport' )->text(),
-			'href'   => $url_site,
-			'id'     => 'n-donatebutton',
-			'active' => true
-		];
-
-		$sidebar_element = $img_element;
-
-		switch ( $skin->getSkinName() ) {
-			case 'cologneblue' :
-			case 'modern' :
-			case 'monobook' :
-			case 'vector' :
-			case 'vector-2022' :
-				$sidebar_element = ( version_compare( $wgVersion, '1.37', '>=' ) ) ? [ $txt_element ] : $img_element;
-			break;
-			default :
-				$sidebar_element = $img_element;
-			break;
-		}
-
-		$bar['donatebutton'] = $sidebar_element;
+		$bar['donatebutton'] = $img_element;
 	}
 
 	/**
