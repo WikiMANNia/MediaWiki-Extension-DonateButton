@@ -38,6 +38,71 @@ class DonateButtonHooks extends Hooks {
 	}
 
 	/**
+	 * This hook is called when generating portlets.
+	 * It allows injecting custom HTML after the portlet.
+	 *
+	 * @since 1.35
+	 *
+	 * @param Skin $skin
+	 * @param string $portletName
+	 * @param string &$html
+	 * @return bool|void True or no return value to continue or false to abort
+	 */
+	public static function onSkinAfterPortlet( $skin, $portletName, &$html ) {
+
+		if ( !self::isActive() )  return;
+
+		global $wgDonateButton, $wgDonateButtonEnabledPaypal;
+		global $wgVersion;
+
+		// 1. get tool tip message
+		$title_text = $skin->msg( 'donatebutton-msg' )->text();
+
+		// 2. get lang_code
+		$lang_code = $skin->getLanguage()->getCode();
+		if ( !self::isAvailable( $lang_code ) ) {
+			switch ( $lang_code ) {
+				case 'de-formal' :
+				case 'de-at' :
+				case 'de-ch' :
+				case 'de-formal' :
+					$lang_code = 'de';
+				break;
+				default :
+					$lang_code = 'en';
+				break;
+			}
+		}
+
+		// 3. get URL of image
+		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
+		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+
+		// 4. get URL of donation page
+		$url_site = $wgDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+
+		// 5. get HTML-Snippet
+		$img_element['donatebutton'] = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
+
+		switch ( $skin->getSkinName() ) {
+			case 'cologneblue' :
+			case 'modern' :
+			case 'monobook' :
+			case 'timeless' :
+			case 'vector' :
+			case 'vector-2022' :
+				if ( array_key_exists( $portletName, $img_element ) ) {
+					$element = $img_element[$portletName];
+					if ( !empty( $element ) ) {
+						$html = $element;
+						return true;
+					}
+				}
+			break;
+		}
+	}
+
+	/**
 	 * Hook: SkinBuildSidebar
 	 * @param Skin $skin
 	 * @param array $bar
@@ -79,10 +144,69 @@ class DonateButtonHooks extends Hooks {
 		// 4. get URL of donation page
 		$url_site = $wgDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
-		// 5. get HTML-Snippet
-		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
+		// 5. get TEXT-Snippet
+		$txt_element = [
+			'text'   => $skin->msg( 'sitesupport' )->text(),
+			'href'   => $url_site,
+			'id'     => 'n-donatebutton',
+			'active' => true
+		];
 
-		$bar['donatebutton'] = $img_element;
+		$sidebar_element = [];
+
+		switch ( $skin->getSkinName() ) {
+			case 'cologneblue' :
+			case 'modern' :
+			case 'monobook' :
+			case 'vector' :
+			case 'vector-2022' :
+			break;
+			case 'timeless' :
+			default :
+				$sidebar_element = [ $txt_element ];
+			break;
+		}
+
+		$bar['donatebutton'] = $sidebar_element;
+
+	}
+
+	public static function onMobileMenu( $name, \MediaWiki\Minerva\Menu\Group &$group
+	) {
+
+		if ( !self::isActive() )  return;
+
+		global $wgDonateButton, $wgDonateButtonEnabledPaypal;
+
+		// 1. get link text
+		$link_txt = $template->msg( 'donatebutton-donation' )->text();
+
+		// 2. get lang_code
+		$lang_code = $template->getLanguage()->getCode();
+		if ( !self::isAvailable( $lang_code ) ) {
+			switch ( $lang_code ) {
+				case 'de-formal' :
+				case 'de-at' :
+				case 'de-ch' :
+				case 'de-formal' :
+					$lang_code = 'de';
+				break;
+				default :
+					$lang_code = 'en';
+				break;
+			}
+		}
+
+		// 3. get URL of donation page
+		$link_url = $wgDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+
+		if ( $name === 'discovery' ) {
+				$group->insert( 'donation' )
+				->addComponent(
+						'donatebutton-donation',
+						$link_url
+				);
+		}
 	}
 
 	/**

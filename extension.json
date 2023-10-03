@@ -3,7 +3,10 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.3.2",
+	"version": "1.4.0",
+	"requires": {
+		"MediaWiki": ">= 1.35.0"
+	},
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
 	"config": {
@@ -18,6 +21,7 @@
 	},
 	"Hooks": {
 	    "BeforePageDisplay": "DonateButtonHooks::onBeforePageDisplay",
+	    "SkinAfterPortlet": "DonateButtonHooks::onSkinAfterPortlet",
 		"SkinBuildSidebar": "DonateButtonHooks::onSkinBuildSidebar"
 	},
 	"MessagesDirs": {
