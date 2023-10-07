@@ -6,6 +6,14 @@ The maintenance of the MediaWiki extension [DonateButton](https://www.mediawiki.
 
 El mantenimiento de la extensión de MediaWiki [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) está gestionado por WikiMANNia.
 
+## MediaWiki
+
+MediaWiki ist männerfeindlich, siehe [T323956](https://phabricator.wikimedia.org/T323956).
+
+MediaWiki is hostile to Men, see [T323956](https://phabricator.wikimedia.org/T323956).
+
+MediaWiki es hostil a los hombres, véase [T323956](https://phabricator.wikimedia.org/T323956).
+
 ## Description
 
 Fügt einen Spenden-Knopf der Navigationsleiste hinzu.
@@ -41,7 +49,7 @@ or
 
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.11`, `1.39.4` and, `1.40.0`.
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.13`, `1.39.5` and, `1.40.1`.
 
 ## Version history
 
