@@ -3,26 +3,41 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"requires": {
 		"MediaWiki": ">= 1.35.0"
 	},
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
+	"config_prefix": "wm",
 	"config": {
-		"DonateButtonEnabledPaypal": false,
-		"DonateButtonURL": "https://yourdomain.org/donationpage.php?lang=",
-		"DonateButtonLangArray": "de, en, es, fr, it, pt, ru"
+		"DonateButtonEnabledPaypal": {
+			"type": "boolean",
+			"value": false
+		},
+		"DonateButtonURL": {
+			"type": "string",
+			"value": "https://yourdomain.org/donationpage.php?lang="
+		},
+		"DonateButtonLangArray": {
+			"type": "string",
+			"value": "de, en, es, fr, it, pt, ru"
+		}
 	},
-	"manifest_version": 1,
+	"manifest_version": 2,
 	"type": "other",
 	"AutoloadClasses": {
-		"DonateButtonHooks": "includes/specials/HooksDonateButton.php"
+		"DonateButtonHooks": "includes/Hooks.php"
 	},
 	"Hooks": {
-	    "BeforePageDisplay": "DonateButtonHooks::onBeforePageDisplay",
-	    "SkinAfterPortlet": "DonateButtonHooks::onSkinAfterPortlet",
-		"SkinBuildSidebar": "DonateButtonHooks::onSkinBuildSidebar"
+	    "BeforePageDisplay": "main",
+	    "SkinAfterPortlet": "main",
+		"SkinBuildSidebar": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "DonateButtonHooks"
+		}
 	},
 	"MessagesDirs": {
 		"DonateButton": [ "i18n" ]

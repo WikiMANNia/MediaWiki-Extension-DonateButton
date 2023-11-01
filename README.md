@@ -6,14 +6,6 @@ The maintenance of the MediaWiki extension [DonateButton](https://www.mediawiki.
 
 El mantenimiento de la extensión de MediaWiki [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) está gestionado por WikiMANNia.
 
-## MediaWiki
-
-MediaWiki ist männerfeindlich, siehe [T323956](https://phabricator.wikimedia.org/T323956).
-
-MediaWiki is hostile to Men, see [T323956](https://phabricator.wikimedia.org/T323956).
-
-MediaWiki es hostil a los hombres, véase [T323956](https://phabricator.wikimedia.org/T323956).
-
 ## Description
 
 Fügt einen Spenden-Knopf der Navigationsleiste hinzu.
@@ -24,13 +16,13 @@ Adds a Donation Button into the [sidebar](https://www.mediawiki.org/wiki/MediaWi
 
 Enable the DonateButton. Default is `false`.
 
-* `$wgDonateButton = true;`
+* `$wmDonateButton = true;`
 
 Specify the link to a donation page.
 
-* `$wgDonateButtonURL = "https://yourdomain.org/yourdonationpage.php?lang=";`
+* `$wmDonateButtonURL = "https://yourdomain.org/yourdonationpage.php?lang=";`
 
-The link is automatically completed by the code of the language selected by the user or alternatively by the `$wgLanguageCode` variable.
+The link is automatically completed by the code of the language selected by the user or alternatively by the `$wmLanguageCode` variable.
 
 ## Localization
 
@@ -49,7 +41,7 @@ or
 
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.13`, `1.39.5` and, `1.40.1`.
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.13`, `1.39.5` and `1.40.1`.
 
 ## Version history
 
@@ -59,8 +51,8 @@ This extension works from REL1_35 and has been tested up to MediaWiki version `1
 
 1.1.1
 * Support added for language "pt".
-* Global variable `wgDonateButtonFilename` removed, now the images in the folder `resources/images` will be accessed.
-* Global variable `wgDonateButtonLangArray` added. The array contains supported languages, konkret sind damit die verfügbaren Bilder für die Buttons gemeint.
+* Global variable `wmDonateButtonFilename` removed, now the images in the folder `resources/images` will be accessed.
+* Global variable `wmDonateButtonLangArray` added. The array contains supported languages, konkret sind damit die verfügbaren Bilder für die Buttons gemeint.
 * If no image is available for the Button, the english image will be used instead.
 * Support added for MediaWiki REL1_37.
 * Support added for Skin "minerva"
@@ -68,8 +60,8 @@ This extension works from REL1_35 and has been tested up to MediaWiki version `1
 
 1.2.0
 
-* Global variable `DonateButtonURL` added. Set the link to a custom donation page.
-* Global variable `DonateButtonEnabledPaypal` added. If this variable is set to "true", then it will be linked to the Paypal page and the variable `DonateButtonURL` ignored.
+* Global variable `wmDonateButtonURL` added. Set the link to a custom donation page.
+* Global variable `wmDonateButtonEnabledPaypal` added. If this variable is set to "true", then it will be linked to the Paypal page and the variable `wmDonateButtonURL` ignored.
 
 1.3.0
 
@@ -83,3 +75,8 @@ This extension works from REL1_35 and has been tested up to MediaWiki version `1
 1.4.0
 
 - Support for REL1_35+ added.
+
+1.5.0
+
+- Changed "configuration schema", replaced manifest version 1 with version 2 and changed the prefix of the configuration variables from default to `wm`.
+- Replaced class “DonateButtonHooks” extending class “Hooks” with class implementing interfaces.
