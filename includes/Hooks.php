@@ -155,9 +155,14 @@ class DonateButtonHooks implements
 		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
 		// 5. get TEXT-Snippet
-		$txt_element = [
+		$txt_item = [
 			'text'   => $skin->msg( 'sitesupport' )->text(),
 			'href'   => $url_site,
+			'id'     => 'n-donatebutton',
+			'active' => true
+		];
+		$empty_item = [
+			'text'   => '',
 			'id'     => 'n-donatebutton',
 			'active' => true
 		];
@@ -172,8 +177,11 @@ class DonateButtonHooks implements
 			case 'vector-2022' :
 			break;
 			case 'timeless' :
+				// Dirty hack for skin Timeless
+				$sidebar_element = [ $empty_item ];
+			break;
 			default :
-				$sidebar_element = [ $txt_element ];
+				$sidebar_element = [ $txt_item ];
 			break;
 		}
 
@@ -184,8 +192,7 @@ class DonateButtonHooks implements
 	/*
 	 * https://www.mediawiki.org/wiki/Skin:Minerva_Neue/Hooks/MobileMenu
 	 */
-	public function onMobileMenu( $name, \MediaWiki\Minerva\Menu\Group &$group
-	) {
+	public function onMobileMenu( $name, \MediaWiki\Minerva\Menu\Group &$group ) {
 
 		if ( !self::isActive() )  return;
 
