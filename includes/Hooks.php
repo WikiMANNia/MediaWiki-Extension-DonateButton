@@ -148,14 +148,10 @@ class DonateButtonHooks implements
 			}
 		}
 
-		// 3. get URL of image
-		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
-		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
-
-		// 4. get URL of donation page
+		// 3. get URL of donation page
 		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
-		// 5. get TEXT-Snippet
+		// 4. get TEXT-Snippet
 		$txt_item = [
 			'text'   => $skin->msg( 'sitesupport' )->text(),
 			'href'   => $url_site,
