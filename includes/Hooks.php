@@ -9,6 +9,7 @@
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Skins\Hook\SkinAfterPortletHook;
 use MediaWiki\Hook\SkinBuildSidebarHook;
+use MediaWiki\MediaWikiServices;
 
 /**
  * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
@@ -88,7 +89,7 @@ class DonateButtonHooks implements
 		}
 
 		// 3. get URL of image
-		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
 		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
@@ -148,7 +149,7 @@ class DonateButtonHooks implements
 		}
 
 		// 3. get URL of image
-		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
 		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
