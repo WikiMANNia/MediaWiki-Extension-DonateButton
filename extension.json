@@ -3,7 +3,7 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.5.2",
+	"version": "1.6.0",
 	"requires": {
 		"MediaWiki": ">= 1.35.0"
 	},
@@ -31,6 +31,7 @@
 	},
 	"Hooks": {
 	    "BeforePageDisplay": "main",
+		"MonacoSidebarEnd": "main",
 	    "SkinAfterPortlet": "main",
 		"SkinBuildSidebar": "main"
 	},
@@ -51,6 +52,9 @@
 		},
 		"ext.donatebutton.modern": {
 			"styles": "css/Modern.css"
+		},
+		"ext.donatebutton.monaco": {
+			"styles": "css/Monaco.css"
 		},
 		"ext.donatebutton.monobook": {
 			"styles": "css/Monobook.css"

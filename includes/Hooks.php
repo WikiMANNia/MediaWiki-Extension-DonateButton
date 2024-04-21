@@ -35,6 +35,7 @@ class DonateButtonHooks implements
 		switch ( $skinname ) {
 			case 'cologneblue' :
 			case 'modern' :
+			case 'monaco' :
 			case 'monobook' :
 			case 'timeless' :
 				$out->addModuleStyles( 'ext.donatebutton.common' );
@@ -67,7 +68,7 @@ class DonateButtonHooks implements
 
 		if ( !self::isActive() )  return;
 
-		global $wmDonateButton, $wmDonateButtonEnabledPaypal;
+		global $wmDonateButtonEnabledPaypal;
 
 		// 1. get tool tip message
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
@@ -101,6 +102,7 @@ class DonateButtonHooks implements
 		switch ( $skin->getSkinName() ) {
 			case 'cologneblue' :
 			case 'modern' :
+			case 'monaco' :
 			case 'monobook' :
 			case 'timeless' :
 			case 'vector' :
@@ -127,7 +129,7 @@ class DonateButtonHooks implements
 
 		if ( !self::isActive() )  return;
 
-		global $wmDonateButton, $wmDonateButtonEnabledPaypal;
+		global $wmDonateButtonEnabledPaypal;
 
 		// 1. get tool tip message
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
@@ -169,6 +171,7 @@ class DonateButtonHooks implements
 		switch ( $skin->getSkinName() ) {
 			case 'cologneblue' :
 			case 'modern' :
+			case 'monaco' :
 			case 'monobook' :
 			case 'vector' :
 			case 'vector-2022' :
@@ -193,7 +196,7 @@ class DonateButtonHooks implements
 
 		if ( !self::isActive() )  return;
 
-		global $wmDonateButton, $wmDonateButtonEnabledPaypal;
+		global $wmDonateButtonEnabledPaypal;
 
 		// 1. get link text
 		$link_txt = $template->msg( 'donatebutton-donation' )->text();
@@ -224,6 +227,55 @@ class DonateButtonHooks implements
 						$link_url
 				);
 		}
+	}
+
+	/**
+	 * Load sidebar ad for Monaco skin.
+	 *
+	 * @return bool
+	 */
+	public static function onMonacoSidebarEnd( $skin, &$html ) {
+
+		if ( !self::isActive() )  return;
+
+		global $wmDonateButtonEnabledPaypal;
+
+		$skin = RequestContext::getMain()->getSkin();
+
+		// 1. get tool tip message
+		$title_text = wfMessage( 'donatebutton-msg' )->text();
+		$title_key = wfMessage( 'donatebutton' )->text();
+
+		// 2. get lang_code
+		$lang_code = $skin->getLanguage()->getCode();
+		if ( !self::isAvailable( $lang_code ) ) {
+			switch ( $lang_code ) {
+				case 'de-formal' :
+				case 'de-at' :
+				case 'de-ch' :
+				case 'de-formal' :
+					$lang_code = 'de';
+				break;
+				default :
+					$lang_code = 'en';
+				break;
+			}
+		}
+
+		// 3. get URL of image
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
+		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+
+		// 4. get URL of donation page
+		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+
+		// 5. get HTML-Snippet
+		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
+
+		$html .= "<p>$title_key</p>";
+		$html .= $img_element;
+
+		return true;
 	}
 
 	/**
@@ -303,6 +355,6 @@ class DonateButtonHooks implements
 	 * Returns true if skin is supported
 	 */
 	private static function isSupported( $skinname ) {
-		return in_array( $skinname, [ 'cologneblue', 'minerva', 'modern', 'monobook', 'timeless', 'vector', 'vector-2022' ] );
+		return in_array( $skinname, [ 'cologneblue', 'minerva', 'modern', 'monaco', 'monobook', 'timeless', 'vector', 'vector-2022' ] );
 	}
 }
