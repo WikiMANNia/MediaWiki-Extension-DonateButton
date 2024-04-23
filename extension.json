@@ -31,7 +31,7 @@
 	},
 	"Hooks": {
 	    "BeforePageDisplay": "main",
-		"MonacoSidebarEnd": "main",
+		"MonacoStaticboxEnd": "main",
 	    "SkinAfterPortlet": "main",
 		"SkinBuildSidebar": "main"
 	},

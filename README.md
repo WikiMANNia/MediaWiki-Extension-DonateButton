@@ -92,4 +92,4 @@ This extension works from REL1_35 and has been tested up to MediaWiki version `1
 
 1.6.0
 
-- Dirty hack for skin [Monaco](https://www.mediawiki.org/wiki/Skin:Monaco).
+- Support for skin [Monaco](https://www.mediawiki.org/wiki/Skin:Monaco).

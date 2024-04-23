@@ -230,11 +230,11 @@ class DonateButtonHooks implements
 	}
 
 	/**
-	 * Load sidebar ad for Monaco skin.
+	 * Load donate box for Monaco skin.
 	 *
 	 * @return bool
 	 */
-	public static function onMonacoSidebarEnd( $skin, &$html ) {
+	public static function onMonacoStaticboxEnd( $skin, &$html ) {
 
 		if ( !self::isActive() )  return;
 
@@ -272,8 +272,8 @@ class DonateButtonHooks implements
 		// 5. get HTML-Snippet
 		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
 
-		$html .= "<p>$title_key</p>";
-		$html .= $img_element;
+		$html .= "<p style='margin-top:0.5em;'>$title_key</p>";
+		$html .= "<div style='text-align:center;'>$img_element</div>";
 
 		return true;
 	}
