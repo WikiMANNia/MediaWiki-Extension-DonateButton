@@ -21,7 +21,7 @@
 		},
 		"DonateButtonLangArray": {
 			"type": "string",
-			"value": "de, en, es, fr, it, pt, ru"
+			"value": "de, en, es, fr, he, it, pt, ru"
 		}
 	},
 	"manifest_version": 2,

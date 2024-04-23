@@ -26,7 +26,7 @@ The link is automatically completed by the code of the language selected by the 
 
 ## Localization
 
-The extension is localized for the languages "de", "en", "es", "fr", "it", "nl", "pt", and "ru".
+The extension is localized for the languages "de", "en", "es", "fr", "he", "it", "nl", "pt", and "ru".
 
 ## Support
 
@@ -93,3 +93,4 @@ This extension works from REL1_35 and has been tested up to MediaWiki version `1
 1.6.0
 
 - Support for skin [Monaco](https://www.mediawiki.org/wiki/Skin:Monaco).
+- Support for "he" added.
