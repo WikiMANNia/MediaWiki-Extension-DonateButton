@@ -1,10 +1,10 @@
 # MediaWiki DonateButton
 
-Die Pflege der MediaWiki-Erweiterung [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) wird von WikiMANNia verwaltet.
+Die Pflege der MediaWiki-Erweiterung [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton/de) wird von WikiMANNia verwaltet.
 
 The maintenance of the MediaWiki extension [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) is managed by WikiMANNia.
 
-El mantenimiento de la extensión de MediaWiki [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton) está gestionado por WikiMANNia.
+El mantenimiento de la extensión de MediaWiki [DonateButton](https://www.mediawiki.org/wiki/Extension:DonateButton/es) está gestionado por WikiMANNia.
 
 ## Description
 
@@ -22,7 +22,7 @@ Specify the link to a donation page.
 
 * `$wmDonateButtonURL = "https://yourdomain.org/yourdonationpage.php?lang=";`
 
-The link is automatically completed by the code of the language selected by the user or alternatively by the `$wmLanguageCode` variable.
+The link is automatically completed by the code of the language selected by the user or alternatively by the `wmLanguageCode` variable.
 
 ## Localization
 
@@ -41,7 +41,7 @@ or
 
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.13`, `1.39.5` and `1.40.1`.
+This extension works from REL1_35 and has been tested up to MediaWiki version `1.35.14`, `1.39.7` and `1.41.1`.
 
 ## Version history
 
