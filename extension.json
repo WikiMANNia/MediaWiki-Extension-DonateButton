@@ -3,21 +3,23 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.3.2",
+	"version": "1.6.0",
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
 	"config": {
+		"_prefix": "wm",
 		"DonateButtonEnabledPaypal": false,
 		"DonateButtonURL": "https://yourdomain.org/donationpage.php?lang=",
-		"DonateButtonLangArray": "de, en, es, fr, it, pt, ru"
+		"DonateButtonLangArray": "de, en, es, fr, he, it, pt, ru"
 	},
 	"manifest_version": 1,
 	"type": "other",
 	"AutoloadClasses": {
-		"DonateButtonHooks": "includes/specials/HooksDonateButton.php"
+		"DonateButtonHooks": "includes/Hooks.php"
 	},
 	"Hooks": {
 	    "BeforePageDisplay": "DonateButtonHooks::onBeforePageDisplay",
+	    "MonacoStaticboxEnd": "DonateButtonHooks::onMonacoStaticboxEnd",
 		"SkinBuildSidebar": "DonateButtonHooks::onSkinBuildSidebar"
 	},
 	"MessagesDirs": {
@@ -32,6 +34,9 @@
 		},
 		"ext.donatebutton.modern": {
 			"styles": "css/Modern.css"
+		},
+		"ext.donatebutton.monaco": {
+			"styles": "css/Monaco.css"
 		},
 		"ext.donatebutton.monobook": {
 			"styles": "css/Monobook.css"
