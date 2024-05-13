@@ -120,10 +120,7 @@ class DonateButtonHooks extends Hooks {
 		}
 
 		// 3. get URL of image
-		$config =
-			( class_exists('\\MediaWiki\\MediaWikiServices') && method_exists('\\MediaWiki\\MediaWikiServices', 'getInstance') )
-			? MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' )
-			: ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
+		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
 
 		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
