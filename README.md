@@ -78,7 +78,7 @@ This extension works from REL1_35 and has been tested up to MediaWiki version `1
 
 1.5.0
 
-- Changed "configuration schema", replaced manifest version 1 with version 2 and changed the prefix of the configuration variables from default to `wg`.
+- Changed "configuration schema", replaced manifest version 1 with version 2 and changed the prefix of the configuration variables from default to `wm`.
 - Replaced class “DonateButtonHooks” extending class “Hooks” with class implementing interfaces.
 
 1.5.1
