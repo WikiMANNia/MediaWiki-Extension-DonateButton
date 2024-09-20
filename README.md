@@ -16,13 +16,13 @@ Adds a Donation Button into the [sidebar](https://www.mediawiki.org/wiki/MediaWi
 
 Enable the DonateButton. Default is `false`.
 
-* `$wmDonateButton = true;`
+* `$wgDonateButton = true;`
 
 Specify the link to a donation page.
 
-* `$wmDonateButtonURL = "https://yourdomain.org/yourdonationpage.php?lang=";`
+* `$wgDonateButtonURL = "https://yourdomain.org/yourdonationpage.php?lang=";`
 
-The link is automatically completed by the code of the language selected by the user or alternatively by the `wmLanguageCode` variable.
+The link is automatically completed by the code of the language selected by the user or alternatively by the `wgLanguageCode` variable.
 
 ## Localization
 
@@ -51,8 +51,8 @@ This extension works from REL1_25 and has been tested up to MediaWiki version `1
 
 1.1.1
 * Support added for language "pt".
-* Global variable `wmDonateButtonFilename` removed, now the images in the folder `resources/images` will be accessed.
-* Global variable `wmDonateButtonLangArray` added. The array contains supported languages, konkret sind damit die verfügbaren Bilder für die Buttons gemeint.
+* Global variable `wgDonateButtonFilename` removed, now the images in the folder `resources/images` will be accessed.
+* Global variable `wgDonateButtonLangArray` added. The array contains supported languages, konkret sind damit die verfügbaren Bilder für die Buttons gemeint.
 * If no image is available for the Button, the english image will be used instead.
 * Support added for MediaWiki REL1_37.
 * Support added for Skin "minerva"
@@ -60,8 +60,8 @@ This extension works from REL1_25 and has been tested up to MediaWiki version `1
 
 1.2.0
 
-* Global variable `wmDonateButtonURL` added. Set the link to a custom donation page.
-* Global variable `wmDonateButtonEnabledPaypal` added. If this variable is set to "true", then it will be linked to the Paypal page and the variable `wmDonateButtonURL` ignored.
+* Global variable `wgDonateButtonURL` added. Set the link to a custom donation page.
+* Global variable `wgDonateButtonEnabledPaypal` added. If this variable is set to "true", then it will be linked to the Paypal page and the variable `wgDonateButtonURL` ignored.
 
 1.3.0
 
@@ -72,7 +72,16 @@ This extension works from REL1_25 and has been tested up to MediaWiki version `1
 
 * A customised skin may be used.
 
+1.5.0
+
+- Changed the prefix of the configuration variables from default to `wm`.
+
 1.6.0
 
 - Support for skin [Monaco](https://www.mediawiki.org/wiki/Skin:Monaco).
 - Support for "he" added.
+
+1.6.1
+
+- Handling global variables with ConfigRegistry and MediaWikiServices
+- Changed the prefix of the configuration variables back to `wg`.

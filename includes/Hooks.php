@@ -2,6 +2,51 @@
 
 class DonateButtonHooks extends Hooks {
 
+	private static $instance;
+
+	private $button_active;
+	private $paypal_active;
+	private $lang_array;
+	private $url_site;
+
+	/**
+	 * @param GlobalVarConfig $config
+	 */
+	public function __construct() {
+
+		global $wgDonateButton, $wgDonateButtonEnabledPaypal;
+		global $wgDonateButtonURL, $wgDonateButtonLangs;
+
+		$this->button_active = ( isset( $wgDonateButton ) && ( $wgDonateButton === true ) );
+		$this->paypal_active = ( isset( $wgDonateButtonEnabledPaypal ) && ( $wgDonateButtonEnabledPaypal === true ) );
+		$this->url_site = $wgDonateButtonURL;
+
+		$this->lang_array = [];
+		if ( empty( $wgDonateButtonLangs ) ) {
+			$this->lang_array[] = 'en';
+		} else {
+			$langs = explode( ', ', $wgDonateButtonLangs );
+			foreach ( $langs as $_lang ) {
+				$this->lang_array[] = $_lang;
+			}
+		}
+	}
+
+	private function __clone() { }
+
+	/**
+	 * @return self
+	 */
+	public static function getInstance() {
+		if ( self::$instance === null ) {
+			// Erstelle eine neue Instanz, falls noch keine vorhanden ist.
+			self::$instance = new self();
+		}
+
+		// Liefere immer die selbe Instanz.
+		return self::$instance;
+	}
+
 	/**
 	 * https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 *
@@ -9,8 +54,6 @@ class DonateButtonHooks extends Hooks {
 	 * @param Skin $skin
 	 */
 	public static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) {
-
-		global $wgVersion;
 
 		if ( !self::isActive() )  return;
 
@@ -51,9 +94,6 @@ class DonateButtonHooks extends Hooks {
 
 		if ( !self::isActive() )  return;
 
-		global $wmDonateButton, $wmDonateButtonEnabledPaypal;
-		global $wgVersion;
-
 		// 1. get tool tip message
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
 
@@ -78,7 +118,7 @@ class DonateButtonHooks extends Hooks {
 		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = self::getInstance()->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
 		// 5. get HTML-Snippet
 		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
@@ -94,8 +134,6 @@ class DonateButtonHooks extends Hooks {
 	public static function onMonacoStaticboxEnd( $skin, &$html ) {
 
 		if ( !self::isActive() )  return;
-
-		global $wmDonateButtonEnabledPaypal;
 
 		$skin = RequestContext::getMain()->getSkin();
 
@@ -121,11 +159,10 @@ class DonateButtonHooks extends Hooks {
 
 		// 3. get URL of image
 		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-
 		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = self::getInstance()->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
 		// 5. get HTML-Snippet
 		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
@@ -151,13 +188,13 @@ class DonateButtonHooks extends Hooks {
 	 * Returns your url sensitive to $lang
 	 */
 	private static function getYourUrl( $lang ) {
-		global $wmDonateButtonURL;
-		$url = $wmDonateButtonURL;
+
+		$url = self::getInstance()->url_site;
 
 		// If the passed URL ends with a '=', append the language abbreviation to make the donation page language sensitive.
 		// i.e. your URL is "https://yourdomain.org/donationpage.php?lang="
 		// Wenn die übergebene URL mit einem '=' endet, das Sprachenkürzel anhängen, um die Spendenseite sprachsensitiv zu behandeln.
-		if ( substr( $wmDonateButtonURL, ( strlen( $wmDonateButtonURL ) - 1 ), 1 ) === '=' ) {
+		if ( substr( $url, ( strlen( $url ) - 1 ), 1 ) === '=' ) {
 			$url .= $lang;
 		}
 		return $url;
@@ -189,24 +226,16 @@ class DonateButtonHooks extends Hooks {
 	 * Returns true if extension is set to active
 	 */
 	private static function isActive() {
-		global $wmDonateButton;
 
-		return ( isset( $wmDonateButton ) && ( ( $wmDonateButton === true ) || ( $wmDonateButton === 'true' ) ) );
+		return self::getInstance()->button_active;
 	}
 
 	/**
 	 * Returns true if button image file is available
 	 */
 	private static function isAvailable( $lang ) {
-		global $wmDonateButtonLangArray;
 
-		$langs = explode( ', ', $wmDonateButtonLangArray );
-		$lang_array = [];
-		foreach ( $langs as $_lang ) {
-			$lang_array[] = $_lang;
-		}
-
-		return in_array( $lang, $lang_array );
+		return in_array( $lang, self::getInstance()->lang_array );
 	}
 
 	/**
