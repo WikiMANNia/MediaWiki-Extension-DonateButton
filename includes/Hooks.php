@@ -20,6 +20,48 @@ class DonateButtonHooks implements
 	SkinBuildSidebarHook
 {
 
+	private static $instance;
+
+	private bool $button_active = true;
+	private bool $paypal_active = false;
+	private array $lang_array = [];
+	private string $url_site;
+
+	/**
+	 * @param GlobalVarConfig $config
+	 */
+	public function __construct() {
+		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'donatebutton' );
+
+		$this->button_active = ( $config->get( 'DonateButton' ) === true );
+		$this->paypal_active = ( $config->get( 'DonateButtonEnabledPaypal' ) === true );
+		$this->url_site = $config->get( 'DonateButtonURL' );
+
+		if ( empty( $config->get( 'DonateButtonLangs' ) ) ) {
+			$this->lang_array[] = 'en';
+		} else {
+			$langs = explode( ', ', $config->get( 'DonateButtonLangs' ) );
+			foreach ( $langs as $_lang ) {
+				$this->lang_array[] = $_lang;
+			}
+		}
+	}
+
+	private function __clone() { }
+
+	/**
+	 * @return self
+	 */
+	public static function getInstance() {
+		if ( self::$instance === null ) {
+			// Erstelle eine neue Instanz, falls noch keine vorhanden ist.
+			self::$instance = new self();
+		}
+
+		// Liefere immer die selbe Instanz.
+		return self::$instance;
+	}
+
 	/**
 	 * https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 *
@@ -68,8 +110,6 @@ class DonateButtonHooks implements
 
 		if ( !self::isActive() )  return;
 
-		global $wmDonateButtonEnabledPaypal;
-
 		// 1. get tool tip message
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
 
@@ -94,7 +134,7 @@ class DonateButtonHooks implements
 		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = $this->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
 		// 5. get HTML-Snippet
 		$img_element['donatebutton'] = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
@@ -129,8 +169,6 @@ class DonateButtonHooks implements
 
 		if ( !self::isActive() )  return;
 
-		global $wmDonateButtonEnabledPaypal;
-
 		// 1. get tool tip message
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
 
@@ -151,7 +189,7 @@ class DonateButtonHooks implements
 		}
 
 		// 3. get URL of donation page
-		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = $this->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
 		// 4. get TEXT-Snippet
 		$txt_item = [
@@ -196,8 +234,6 @@ class DonateButtonHooks implements
 
 		if ( !self::isActive() )  return;
 
-		global $wmDonateButtonEnabledPaypal;
-
 		// 1. get link text
 		$link_txt = $template->msg( 'donatebutton-donation' )->text();
 
@@ -218,7 +254,7 @@ class DonateButtonHooks implements
 		}
 
 		// 3. get URL of donation page
-		$link_url = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$link_url = $this->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
 		if ( $name === 'discovery' ) {
 				$group->insert( 'donation' )
@@ -237,8 +273,6 @@ class DonateButtonHooks implements
 	public static function onMonacoStaticboxEnd( $skin, &$html ) {
 
 		if ( !self::isActive() )  return;
-
-		global $wmDonateButtonEnabledPaypal;
 
 		$skin = RequestContext::getMain()->getSkin();
 
@@ -267,7 +301,7 @@ class DonateButtonHooks implements
 		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = $wmDonateButtonEnabledPaypal ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = self::getInstance()->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
 
 		// 5. get HTML-Snippet
 		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
@@ -293,13 +327,13 @@ class DonateButtonHooks implements
 	 * Returns your url sensitive to $lang
 	 */
 	private static function getYourUrl( $lang ) {
-		global $wmDonateButtonURL;
-		$url = $wmDonateButtonURL;
+
+		$url = self::getInstance()->url_site;
 
 		// If the passed URL ends with a '=', append the language abbreviation to make the donation page language sensitive.
 		// i.e. your URL is "https://yourdomain.org/donationpage.php?lang="
 		// Wenn die übergebene URL mit einem '=' endet, das Sprachenkürzel anhängen, um die Spendenseite sprachsensitiv zu behandeln.
-		if ( substr( $wmDonateButtonURL, ( strlen( $wmDonateButtonURL ) - 1 ), 1 ) === '=' ) {
+		if ( substr( $url, ( strlen( $url ) - 1 ), 1 ) === '=' ) {
 			$url .= $lang;
 		}
 		return $url;
@@ -331,24 +365,16 @@ class DonateButtonHooks implements
 	 * Returns true if extension is set to active
 	 */
 	private static function isActive() {
-		global $wmDonateButton;
 
-		return ( isset( $wmDonateButton ) && ( ( $wmDonateButton === true ) || ( $wmDonateButton === 'true' ) ) );
+		return self::getInstance()->button_active;
 	}
 
 	/**
 	 * Returns true if button image file is available
 	 */
 	private static function isAvailable( $lang ) {
-		global $wmDonateButtonLangArray;
 
-		$langs = explode( ', ', $wmDonateButtonLangArray );
-		$lang_array = [];
-		foreach ( $langs as $_lang ) {
-			$lang_array[] = $_lang;
-		}
-
-		return in_array( $lang, $lang_array );
+		return in_array( $lang, self::getInstance()->lang_array );
 	}
 
 	/**

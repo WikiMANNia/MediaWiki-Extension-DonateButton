@@ -3,25 +3,32 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"requires": {
 		"MediaWiki": ">= 1.35.0"
 	},
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
-	"config_prefix": "wm",
+	"ConfigRegistry": {
+		"donatebutton": "GlobalVarConfig::newInstance"
+	},
 	"config": {
+		"DonateButton": {
+			"type": "boolean",
+			"value": "true"
+		},
 		"DonateButtonEnabledPaypal": {
 			"type": "boolean",
 			"value": false
 		},
 		"DonateButtonURL": {
 			"type": "string",
-			"value": "https://yourdomain.org/donationpage.php?lang="
+			"value": "",
+			"description": "Something like: https://yourdomain.org/donationpage.php?lang="
 		},
-		"DonateButtonLangArray": {
+		"DonateButtonLangs": {
 			"type": "string",
-			"value": "de, en, es, fr, he, it, pt, ru"
+			"value": "de, en, es, fr, he, it, nl, pt, ru"
 		}
 	},
 	"manifest_version": 2,
