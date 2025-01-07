@@ -24,7 +24,7 @@ class DonateButtonHooks implements
 
 	private bool $button_active = true;
 	private bool $paypal_active = false;
-	private array $lang_array = [];
+	private string $lang = 'en';
 	private string $url_site;
 
 	/**
@@ -32,17 +32,39 @@ class DonateButtonHooks implements
 	 */
 	public function __construct() {
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'donatebutton' );
+		$ctx    = RequestContext::getMain();
 
 		$this->button_active = ( $config->get( 'DonateButton' ) === true );
 		$this->paypal_active = ( $config->get( 'DonateButtonEnabledPaypal' ) === true );
 		$this->url_site = $config->get( 'DonateButtonURL' );
 
-		if ( empty( $config->get( 'DonateButtonLangs' ) ) ) {
-			$this->lang_array[] = 'en';
-		} else {
+		if ( !empty( $config->get( 'DonateButtonLangs' ) ) ) {
+			$lang_code= $ctx->getLanguage()->getCode();
+			switch ( $lang_code ) {
+				case 'de-at' :
+				case 'de-ch' :
+				case 'de-formal' :
+					$lang_code = 'de';
+				break;
+				case 'es-formal' :
+					$lang_code = 'es';
+				break;
+				case 'nl-informal' :
+					$lang_code = 'nl';
+				break;
+				case 'en-ca' :
+				case 'en-gb' :
+					$lang_code = 'en';
+				break;
+			}
+
 			$langs = explode( ', ', $config->get( 'DonateButtonLangs' ) );
-			foreach ( $langs as $_lang ) {
-				$this->lang_array[] = $_lang;
+			$lang_array = [];
+			foreach ( $langs as $lang ) {
+				$lang_array[] = $lang;
+			}
+			if ( in_array( $lang_code, $lang_array ) ) {
+				$this->lang = $lang_code;
 			}
 		}
 	}
@@ -75,6 +97,7 @@ class DonateButtonHooks implements
 
 		$skinname = $skin->getSkinName();
 		switch ( $skinname ) {
+			case 'citizen' :
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monaco' :
@@ -114,32 +137,20 @@ class DonateButtonHooks implements
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
 
 		// 2. get lang_code
-		$lang_code = $skin->getLanguage()->getCode();
-		if ( !self::isAvailable( $lang_code ) ) {
-			switch ( $lang_code ) {
-				case 'de-formal' :
-				case 'de-at' :
-				case 'de-ch' :
-				case 'de-formal' :
-					$lang_code = 'de';
-				break;
-				default :
-					$lang_code = 'en';
-				break;
-			}
-		}
+		$url_lang = $this->lang;
 
 		// 3. get URL of image
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
-		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $url_lang . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = $this->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = $this->paypal_active ? self::getPaypalUrl( $url_lang ) : self::getYourUrl( $url_lang );
 
 		// 5. get HTML-Snippet
 		$img_element['donatebutton'] = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
 
 		switch ( $skin->getSkinName() ) {
+			case 'citizen' :
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monaco' :
@@ -173,23 +184,10 @@ class DonateButtonHooks implements
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
 
 		// 2. get lang_code
-		$lang_code = $skin->getLanguage()->getCode();
-		if ( !self::isAvailable( $lang_code ) ) {
-			switch ( $lang_code ) {
-				case 'de-formal' :
-				case 'de-at' :
-				case 'de-ch' :
-				case 'de-formal' :
-					$lang_code = 'de';
-				break;
-				default :
-					$lang_code = 'en';
-				break;
-			}
-		}
+		$url_lang = $this->lang;
 
 		// 3. get URL of donation page
-		$url_site = $this->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = $this->paypal_active ? self::getPaypalUrl( $url_lang ) : self::getYourUrl( $url_lang );
 
 		// 4. get TEXT-Snippet
 		$txt_item = [
@@ -207,6 +205,7 @@ class DonateButtonHooks implements
 		$sidebar_element = [];
 
 		switch ( $skin->getSkinName() ) {
+			case 'citizen' :
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monaco' :
@@ -238,23 +237,10 @@ class DonateButtonHooks implements
 		$link_txt = $template->msg( 'donatebutton-donation' )->text();
 
 		// 2. get lang_code
-		$lang_code = $template->getLanguage()->getCode();
-		if ( !self::isAvailable( $lang_code ) ) {
-			switch ( $lang_code ) {
-				case 'de-formal' :
-				case 'de-at' :
-				case 'de-ch' :
-				case 'de-formal' :
-					$lang_code = 'de';
-				break;
-				default :
-					$lang_code = 'en';
-				break;
-			}
-		}
+		$url_lang = $this->lang;
 
 		// 3. get URL of donation page
-		$link_url = $this->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$link_url = $this->paypal_active ? self::getPaypalUrl( $url_lang ) : self::getYourUrl( $url_lang );
 
 		if ( $name === 'discovery' ) {
 				$group->insert( 'donation' )
@@ -270,7 +256,7 @@ class DonateButtonHooks implements
 	 *
 	 * @return bool
 	 */
-	public static function onMonacoStaticboxEnd( $skin, &$html ) {
+	public function onMonacoStaticboxEnd( $skin, &$html ) {
 
 		if ( !self::isActive() )  return;
 
@@ -281,27 +267,14 @@ class DonateButtonHooks implements
 		$title_key = wfMessage( 'donatebutton' )->text();
 
 		// 2. get lang_code
-		$lang_code = $skin->getLanguage()->getCode();
-		if ( !self::isAvailable( $lang_code ) ) {
-			switch ( $lang_code ) {
-				case 'de-formal' :
-				case 'de-at' :
-				case 'de-ch' :
-				case 'de-formal' :
-					$lang_code = 'de';
-				break;
-				default :
-					$lang_code = 'en';
-				break;
-			}
-		}
+		$url_lang = $this->lang;
 
 		// 3. get URL of image
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'main' );
-		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $url_lang . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = self::getInstance()->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$url_site = self::getInstance()->paypal_active ? self::getPaypalUrl( $url_lang ) : self::getYourUrl( $url_lang );
 
 		// 5. get HTML-Snippet
 		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
@@ -367,20 +340,5 @@ class DonateButtonHooks implements
 	private static function isActive() {
 
 		return self::getInstance()->button_active;
-	}
-
-	/**
-	 * Returns true if button image file is available
-	 */
-	private static function isAvailable( $lang ) {
-
-		return in_array( $lang, self::getInstance()->lang_array );
-	}
-
-	/**
-	 * Returns true if skin is supported
-	 */
-	private static function isSupported( $skinname ) {
-		return in_array( $skinname, [ 'cologneblue', 'minerva', 'modern', 'monaco', 'monobook', 'timeless', 'vector', 'vector-2022' ] );
 	}
 }
