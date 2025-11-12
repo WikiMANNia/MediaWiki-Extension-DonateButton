@@ -15,7 +15,7 @@
 	"config": {
 		"DonateButton": {
 			"type": "boolean",
-			"value": "true"
+			"value": true
 		},
 		"DonateButtonEnabledPaypal": {
 			"type": "boolean",
