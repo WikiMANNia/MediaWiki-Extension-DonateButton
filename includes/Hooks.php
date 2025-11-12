@@ -10,6 +10,7 @@ use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Skins\Hook\SkinAfterPortletHook;
 use MediaWiki\Hook\SkinBuildSidebarHook;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Html\Html;
 
 /**
  * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
@@ -31,6 +32,7 @@ class DonateButtonHooks implements
 	 * @param GlobalVarConfig $config
 	 */
 	public function __construct() {
+
 		$config = MediaWikiServices::getInstance()->getConfigFactory()->makeConfig( 'donatebutton' );
 		$ctx    = RequestContext::getMain();
 
