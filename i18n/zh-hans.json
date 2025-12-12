@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiMANNia"
+		]
+	},
+	"donatebutton-msg": "捐赠按钮",
+	"donatebutton-desc": "[https://www.mediawiki.org/wiki/Sidebar 侧栏]中添加一个自定义捐款框",
+	"donatebutton": "我们请求",
+	"sitesupport": "捐款",
+	"lang": "zh"
+}

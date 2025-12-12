@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiMANNia"
+		]
+	},
+	"donatebutton-msg": "기부 버튼",
+	"donatebutton-desc": "[https://www.mediawiki.org/wiki/Sidebar 사이드바]에 사용자 정의 기부 상자를 추가",
+	"donatebutton": "를 부탁드립니다",
+	"sitesupport": "기부",
+	"lang": "ko"
+}
