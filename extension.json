@@ -3,7 +3,7 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.7.0",
+	"version": "1.8.0",
 	"requires": {
 		"MediaWiki": ">= 1.35.0"
 	},
@@ -20,6 +20,16 @@
 		"DonateButtonEnabledPaypal": {
 			"type": "boolean",
 			"value": false
+		},
+		"DonateButtonPaypalId": {
+			"type": "string",
+			"value": "",
+			"description": "Your Paypal ID"
+		},
+		"DonateButtonPaypalUrl": {
+			"type": "string",
+			"value": "https://www.paypal.com/cgi-bin/webscr",
+			"description": "Link to Paypal"
 		},
 		"DonateButtonURL": {
 			"type": "string",
