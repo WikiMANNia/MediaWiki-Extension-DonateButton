@@ -41,7 +41,7 @@ or
 
 ## Compatibility
 
-This extension works from REL1_42 and has been tested up to MediaWiki version `1.42.3`, `1.43.5`, and `1.44.2`.
+This extension works from REL1_42 and has been tested up to MediaWiki version `1.42.3`, `1.43.6`, and `1.44.2`.
 
 ## Version history
 
@@ -107,3 +107,7 @@ This extension works from REL1_42 and has been tested up to MediaWiki version `1
 1.7.1
 
 * Added compatibility to MediaWiki v1.44.
+
+1.8.0
+
+* Refactoring "Paypal": Add Paypal-Form with global variables `DonateButtonPaypalId` and `DonateButtonPaypalUrl`.
