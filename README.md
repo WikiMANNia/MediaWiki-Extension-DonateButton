@@ -85,3 +85,7 @@ This extension works from REL1_25 and has been tested up to MediaWiki version `1
 
 - Handling global variables with ConfigRegistry and MediaWikiServices
 - Changed the prefix of the configuration variables back to `wg`.
+
+1.8.0
+
+* Refactoring "Paypal": Add Paypal-Form with global variables `DonateButtonPaypalId` and `DonateButtonPaypalUrl`.

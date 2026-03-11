@@ -1,4 +1,10 @@
 <?php
+/**
+ * Hooks for DonateButton extension
+ *
+ * @file
+ * @ingroup Extensions
+ */
 
 class DonateButtonHooks extends Hooks {
 
@@ -6,28 +12,55 @@ class DonateButtonHooks extends Hooks {
 
 	private $button_active;
 	private $paypal_active;
-	private $lang_array;
-	private $url_site;
+	private $paypal_id;
+	private $paypal_url;
+	private $lang = 'en';
+	private $site_url;
 
 	/**
 	 * @param GlobalVarConfig $config
 	 */
 	public function __construct() {
 
+		$ctx = RequestContext::getMain();
+
 		global $wgDonateButton, $wgDonateButtonEnabledPaypal;
+		global $wgDonateButtonPaypalId, $wgDonateButtonPaypalUrl;
 		global $wgDonateButtonURL, $wgDonateButtonLangs;
 
 		$this->button_active = ( isset( $wgDonateButton ) && ( $wgDonateButton === true ) );
 		$this->paypal_active = ( isset( $wgDonateButtonEnabledPaypal ) && ( $wgDonateButtonEnabledPaypal === true ) );
-		$this->url_site = $wgDonateButtonURL;
+		$this->paypal_id  = $wgDonateButtonPaypalId;
+		$this->paypal_url = $wgDonateButtonPaypalUrl;
+		$this->site_url   = $wgDonateButtonURL;
 
-		$this->lang_array = [];
-		if ( empty( $wgDonateButtonLangs ) ) {
-			$this->lang_array[] = 'en';
-		} else {
+		if ( !empty( $wgDonateButtonLangs ) ) {
+			$lang_code = $ctx->getLanguage()->getCode();
+			switch ( $lang_code ) {
+				case 'de-at' :
+				case 'de-ch' :
+				case 'de-formal' :
+					$lang_code = 'de';
+				break;
+				case 'es-formal' :
+					$lang_code = 'es';
+				break;
+				case 'nl-informal' :
+					$lang_code = 'nl';
+				break;
+				case 'en-ca' :
+				case 'en-gb' :
+					$lang_code = 'en';
+				break;
+			}
+
 			$langs = explode( ', ', $wgDonateButtonLangs );
-			foreach ( $langs as $_lang ) {
-				$this->lang_array[] = $_lang;
+			$lang_array = [];
+			foreach ( $langs as $lang ) {
+				$lang_array[] = $lang;
+			}
+			if ( in_array( $lang_code, $lang_array ) ) {
+				$this->lang = $lang_code;
 			}
 		}
 	}
@@ -52,31 +85,33 @@ class DonateButtonHooks extends Hooks {
 	 *
 	 * @param OutputPage $out
 	 * @param Skin $skin
+	 * @return void This hook must not abort, it must return no value
 	 */
 	public static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) {
 
 		if ( !self::isActive() )  return;
 
-		$skinname = $skin->getSkinName();
-		switch ( $skinname ) {
+		$skinName = $skin->getSkinName();
+		switch ( $skinName ) {
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monaco' :
 			case 'monobook' :
 			case 'timeless' :
 				$out->addModuleStyles( 'ext.donatebutton.common' );
-				$out->addModuleStyles( 'ext.donatebutton.' . $skinname );
+				$out->addModuleStyles( 'ext.donatebutton.' . $skinName );
 			break;
 			case 'vector' :
 			case 'vector-2022' :
 				$out->addModuleStyles( 'ext.donatebutton.common' );
 				$out->addModuleStyles( 'ext.donatebutton.vector' );
 			break;
+			case 'apioutput' :
 			case 'minerva' :
 			case 'fallback' :
 			break;
 			default :
-				wfLogWarning( 'Skin ' . $skinname . ' not supported by DonateButton.' . "\n" );
+				wfLogWarning( 'Skin ' . $skinName . ' not supported by DonateButton.' . "\n" );
 			break;
 		}
 	}
@@ -98,30 +133,22 @@ class DonateButtonHooks extends Hooks {
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
 
 		// 2. get lang_code
-		$lang_code = $skin->getLanguage()->getCode();
-		if ( !self::isAvailable( $lang_code ) ) {
-			switch ( $lang_code ) {
-				case 'de-formal' :
-				case 'de-at' :
-				case 'de-ch' :
-				case 'de-formal' :
-					$lang_code = 'de';
-				break;
-				default :
-					$lang_code = 'en';
-				break;
-			}
-		}
+		$lang_code = self::getInstance()->lang;
 
 		// 3. get URL of image
 		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+		$file_url = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = self::getInstance()->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$site_url = self::getInstance()->paypal_active
+			? self::getInstance()->paypal_url
+			: self::getYourUrl( $lang_code );
 
-		// 5. get HTML-Snippet
-		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
+		// 5. get Snippet
+		$img_element =
+			( self::getInstance()->paypal_active && !empty( self::getInstance()->paypal_id ) )
+			? self::getPaypalSnippet( $skin, $title_text, $file_url, $site_url, self::getInstance()->paypal_id )
+			: self::getHtmlSnippet( $skin, $title_text, $file_url, $site_url );
 
 		$bar['donatebutton'] = $img_element;
 	}
@@ -142,30 +169,22 @@ class DonateButtonHooks extends Hooks {
 		$title_key = wfMessage( 'donatebutton' )->text();
 
 		// 2. get lang_code
-		$lang_code = $skin->getLanguage()->getCode();
-		if ( !self::isAvailable( $lang_code ) ) {
-			switch ( $lang_code ) {
-				case 'de-formal' :
-				case 'de-at' :
-				case 'de-ch' :
-				case 'de-formal' :
-					$lang_code = 'de';
-				break;
-				default :
-					$lang_code = 'en';
-				break;
-			}
-		}
+		$lang_code = self::getInstance()->lang;
 
 		// 3. get URL of image
 		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-		$url_file = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+		$file_url = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
-		$url_site = self::getInstance()->paypal_active ? self::getPaypalUrl( $lang_code ) : self::getYourUrl( $lang_code );
+		$site_url = self::getInstance()->paypal_active
+			? self::getInstance()->paypal_url
+			: self::getYourUrl( $lang_code );
 
-		// 5. get HTML-Snippet
-		$img_element = self::getHtmlSnippet( $skin, $title_text, $url_site, $url_file );
+		// 5. get Snippet
+		$img_element =
+			( self::getInstance()->paypal_active && !empty( self::getInstance()->paypal_id ) )
+			? self::getPaypalSnippet( $skin, $title_text, $file_url, $site_url, self::getInstance()->paypal_id )
+			: self::getHtmlSnippet( $skin, $title_text, $file_url, $site_url );
 
 		$html .= "<p style='margin-top:0.5em;'>$title_key</p>";
 		$html .= "<div style='text-align:center;'>$img_element</div>";
@@ -174,22 +193,11 @@ class DonateButtonHooks extends Hooks {
 	}
 
 	/**
-	 * Returns Paypal's url sensitive to $lang
-	 */
-	private static function getPaypalUrl( $lang ) {
-
-		if ( strcmp( $lang, 'en' ) === 0 ) {
-			return 'https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif';
-		}
-		return 'https://www.paypalobjects.com/' . $lang . '_' . strtoupper( $lang ) . '/i/btn/btn_donate_LG.gif';
-	}
-
-	/**
 	 * Returns your url sensitive to $lang
 	 */
 	private static function getYourUrl( $lang ) {
 
-		$url = self::getInstance()->url_site;
+		$url = self::getInstance()->site_url;
 
 		// If the passed URL ends with a '=', append the language abbreviation to make the donation page language sensitive.
 		// i.e. your URL is "https://yourdomain.org/donationpage.php?lang="
@@ -203,13 +211,40 @@ class DonateButtonHooks extends Hooks {
 	/**
 	 * Returns HTML-Snippet
 	 */
-	private static function getHtmlSnippet( $skin, $title, $url_site, $url_image ) {
+	private static function getHtmlSnippet( $skin, $title, $site_img, $site_url ) {
 		$html_pattern = '<a href="%1$s"><img alt="%2$s" title="%3$s" src="%4$s" /></a>';
 		$html_code = sprintf( $html_pattern,
-						$url_site,
+						$site_url,
 						'Donate-Button',
 						$title,
-						$url_image
+						$site_img
+					);
+
+		switch ( $skin->getSkinName() ) {
+			case 'cologneblue' :
+				$html_code = Html::rawElement( 'div', [ 'class' => 'body' ], $html_code );
+			break;
+			default :
+			break;
+		}
+		return $html_code;
+	}
+
+	/**
+	 * Returns Paypal-Snippet
+	 */
+	private static function getPaypalSnippet( $skin, $title, $paypal_img, $paypal_url, $paypal_id ) {
+		$html_pattern = '<form action="%1$s" method="post">
+		<input type="hidden" name="cmd" value="_s-xclick"/>
+		<input type="hidden" name="hosted_button_id" value="%2$s"/>
+		<input type="image" name="submit" border="0" alt="%3$s" title="%4$s" src="%5$s"/>
+	</form>';
+		$html_code = sprintf( $html_pattern,
+						$paypal_url,
+						$paypal_id,
+						'Donate-Button',
+						$title,
+						$paypal_img
 					);
 
 		switch ( $skin->getSkinName() ) {
@@ -228,20 +263,5 @@ class DonateButtonHooks extends Hooks {
 	private static function isActive() {
 
 		return self::getInstance()->button_active;
-	}
-
-	/**
-	 * Returns true if button image file is available
-	 */
-	private static function isAvailable( $lang ) {
-
-		return in_array( $lang, self::getInstance()->lang_array );
-	}
-
-	/**
-	 * Returns true if skin is supported
-	 */
-	private static function isSupported( $skinname ) {
-		return in_array( $skinname, [ 'cologneblue', 'minerva', 'modern', 'monaco', 'monobook', 'timeless', 'vector', 'vector-2022' ] );
 	}
 }
