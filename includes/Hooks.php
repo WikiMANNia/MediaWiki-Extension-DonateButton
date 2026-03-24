@@ -133,16 +133,16 @@ class DonateButtonHooks extends Hooks {
 		$title_text = $skin->msg( 'donatebutton-msg' )->text();
 
 		// 2. get lang_code
-		$lang_code = self::getInstance()->lang;
+		$url_lang = self::getInstance()->lang;
 
 		// 3. get URL of image
 		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-		$file_url = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+		$file_url = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $url_lang . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
 		$site_url = self::getInstance()->paypal_active
 			? self::getInstance()->paypal_url
-			: self::getYourUrl( $lang_code );
+			: self::getYourUrl( $url_lang );
 
 		// 5. get Snippet
 		$img_element =
@@ -169,16 +169,16 @@ class DonateButtonHooks extends Hooks {
 		$title_key = wfMessage( 'donatebutton' )->text();
 
 		// 2. get lang_code
-		$lang_code = self::getInstance()->lang;
+		$url_lang = self::getInstance()->lang;
 
 		// 3. get URL of image
 		$config = ConfigFactory::getDefaultInstance()->makeConfig( 'main' );
-		$file_url = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $lang_code . '/Donate_Button.gif';
+		$file_url = $config->get( 'ExtensionAssetsPath' ) . '/DonateButton/resources/images/' . $url_lang . '/Donate_Button.gif';
 
 		// 4. get URL of donation page
 		$site_url = self::getInstance()->paypal_active
 			? self::getInstance()->paypal_url
-			: self::getYourUrl( $lang_code );
+			: self::getYourUrl( $url_lang );
 
 		// 5. get Snippet
 		$img_element =
@@ -237,7 +237,7 @@ class DonateButtonHooks extends Hooks {
 		$html_pattern = '<form action="%1$s" method="post">
 		<input type="hidden" name="cmd" value="_s-xclick"/>
 		<input type="hidden" name="hosted_button_id" value="%2$s"/>
-		<input type="image" name="submit" border="0" alt="%3$s" title="%4$s" src="%5$s"/>
+		<input type="image" name="submit" style="border:none;box-shadow:none;outline:none;" alt="%3$s" title="%4$s" src="%5$s"/>
 	</form>';
 		$html_code = sprintf( $html_pattern,
 						$paypal_url,
