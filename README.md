@@ -41,7 +41,7 @@ or
 
 ## Compatibility
 
-This extension works from REL1_42 and has been tested up to MediaWiki version `1.42.3`, `1.43.6`, and `1.44.2`.
+This extension works from REL1_40 and has been tested up to MediaWiki version `1.42.3`, `1.43.6`, and `1.44.2`.
 
 ## Version history
 
