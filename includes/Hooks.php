@@ -6,10 +6,15 @@
  * @ingroup Extensions
  */
 
+if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+	class_alias( '\Html', '\Html\Html' );
+}
+
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Skins\Hook\SkinAfterPortletHook;
 use MediaWiki\Hook\SkinBuildSidebarHook;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Html\Html;
 
 /**
  * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
@@ -44,7 +49,7 @@ class DonateButtonHooks implements
 		$this->site_url      = $config->get( 'DonateButtonURL' );
 
 		if ( !empty( $config->get( 'DonateButtonLangs' ) ) ) {
-			$lang_code= $ctx->getLanguage()->getCode();
+			$lang_code = $ctx->getLanguage()->getCode();
 			switch ( $lang_code ) {
 				case 'de-at' :
 				case 'de-ch' :
@@ -364,7 +369,7 @@ class DonateButtonHooks implements
 		$html_pattern = '<form action="%1$s" method="post">
 		<input type="hidden" name="cmd" value="_s-xclick"/>
 		<input type="hidden" name="hosted_button_id" value="%2$s"/>
-		<input type="image" name="submit" border="0" alt="%3$s" title="%4$s" src="%5$s"/>
+		<input type="image" name="submit" style="border:none;box-shadow:none;outline:none;" alt="%3$s" title="%4$s" src="%5$s"/>
 	</form>';
 		$html_code = sprintf( $html_pattern,
 						$paypal_url,
