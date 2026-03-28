@@ -41,7 +41,7 @@ or
 
 ## Compatibility
 
-This extension works from REL1_40 and has been tested up to MediaWiki version `1.42.3`, `1.43.6`, and `1.44.2`.
+This extension works from REL1_35 and has been tested up to MediaWiki versions `1.35.14`, `1.39.17`, `1.41.2`, `1.42.3`, `1.43.6`, `1.44.2`, and `1.45.1`.
 
 ## Version history
 
@@ -104,10 +104,11 @@ This extension works from REL1_40 and has been tested up to MediaWiki version `1
 
 * Support added for Skin [Citizen](https://www.mediawiki.org/wiki/Skin:Citizen).
 
-1.7.1
-
-* Added compatibility to MediaWiki v1.44.
-
 1.8.0
 
+* Added compatibility to MediaWiki v1.44.
 * Refactoring "Paypal": Add Paypal-Form with global variables `DonateButtonPaypalId` and `DonateButtonPaypalUrl`.
+
+1.9.0
+
+* Refactoring classes, namespace and backward compatibility.

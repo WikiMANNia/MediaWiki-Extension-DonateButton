@@ -3,9 +3,9 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.8.0",
+	"version": "1.9.0",
 	"requires": {
-		"MediaWiki": ">= 1.40.0"
+		"MediaWiki": ">= 1.35.0"
 	},
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
@@ -43,19 +43,19 @@
 	},
 	"manifest_version": 2,
 	"type": "other",
-	"AutoloadClasses": {
-		"DonateButtonHooks": "includes/Hooks.php"
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\DonateButton\\": "includes/"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\DonateButton\\Hooks"
+		}
 	},
 	"Hooks": {
 	    "BeforePageDisplay": "main",
 		"MonacoStaticboxEnd": "main",
 	    "SkinAfterPortlet": "main",
 		"SkinBuildSidebar": "main"
-	},
-	"HookHandlers": {
-		"main": {
-			"class": "DonateButtonHooks"
-		}
 	},
 	"MessagesDirs": {
 		"DonateButton": [ "i18n" ]

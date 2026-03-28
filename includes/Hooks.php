@@ -6,16 +6,31 @@
  * @ingroup Extensions
  */
 
+namespace MediaWiki\Extension\DonateButton;
+
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Skins\Hook\SkinAfterPortletHook;
 use MediaWiki\Hook\SkinBuildSidebarHook;
-use MediaWiki\MediaWikiServices;
+
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
+use MediaWiki\MediaWikiServices;
+
+// Class aliases for multi-version compatibility.
+// These need to be in global scope so phan can pick up on them,
+// and before any use statements that make use of the namespaced names.
+if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+	if ( !class_exists('MediaWiki\Html\Html') )  class_alias( '\Html', '\MediaWiki\Html\Html' );
+}
+
+if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
+	if ( !class_exists('MediaWiki\Context\RequestContext') )  class_alias( '\RequestContext', '\MediaWiki\Context\RequestContext' );
+}
 
 /**
  * @phpcs:disable MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName
  */
-class DonateButtonHooks implements
+class Hooks implements
 	BeforePageDisplayHook,
 	SkinAfterPortletHook,
 	SkinBuildSidebarHook
