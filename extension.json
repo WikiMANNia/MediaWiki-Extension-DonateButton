@@ -9,6 +9,7 @@
 	},
 	"namemsg": "donatebutton-msg",
 	"descriptionmsg": "donatebutton-desc",
+	"callback": "MediaWiki\\Extension\\DonateButton\\Hooks::onRegistration",
 	"ConfigRegistry": {
 		"donatebutton": "GlobalVarConfig::newInstance"
 	},
