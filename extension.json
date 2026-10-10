@@ -3,7 +3,7 @@
 	"author": "[//wikimannia.org WikiMANNia]",
 	"url": "https://www.mediawiki.org/wiki/Extension:DonateButton",
 	"license-name": "GPL-2.0-or-later",
-	"version": "1.9.0",
+	"version": "1.10.0",
 	"requires": {
 		"MediaWiki": ">= 1.35.0"
 	},
@@ -65,11 +65,17 @@
 		"ext.donatebutton.common": {
 			"styles": "css/Common.css"
 		},
+		"ext.donatebutton.bouquet": {
+			"styles": "css/Bouquet.css"
+		},
 		"ext.donatebutton.citizen": {
 			"styles": "css/Citizen.css"
 		},
 		"ext.donatebutton.cologneblue": {
 			"styles": "css/Cologneblue.css"
+		},
+		"ext.donatebutton.gamepress": {
+			"styles": "css/Gamepress.css"
 		},
 		"ext.donatebutton.modern": {
 			"styles": "css/Modern.css"

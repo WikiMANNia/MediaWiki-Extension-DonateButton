@@ -1,0 +1,21 @@
+/* CSS for Gamepress skin */
+
+.after-portlet-donatebutton {
+	text-align: center;
+}
+
+/* DonateButton: überflüssigen Abstand unter dem Portlet beseitigen */
+#p-donatebutton {
+    margin: 0 0 0 0 !important;
+    padding: 0 0 0 0 !important;
+}
+
+/* Gewünschten Abstand zwischen Überschrift und Bild erhalten */
+#p-donatebutton .widget-title {
+    margin: 0 0 6px 0 !important;
+}
+
+/* Nach dem Bild den üblichen Abstand wiederherstellen */
+#p-donatebutton + .after-portlet-donatebutton {
+    margin: 0 0 18px 0 !important;
+}

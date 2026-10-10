@@ -24,7 +24,6 @@ class Hooks implements
 	SkinAfterPortletHook,
 	SkinBuildSidebarHook
 {
-
 	private static $instance;
 
 	private bool $button_active;
@@ -111,8 +110,10 @@ class Hooks implements
 
 		$skinName = $skin->getSkinName();
 		switch ( $skinName ) {
+			case 'bouquet' :
 			case 'citizen' :
 			case 'cologneblue' :
+			case 'gamepress' :
 			case 'modern' :
 			case 'monaco' :
 			case 'monobook' :
@@ -126,6 +127,7 @@ class Hooks implements
 				$out->addModuleStyles( 'ext.donatebutton.vector' );
 			break;
 			case 'apioutput' :
+			case 'dusk' :
 			case 'minerva' :
 			case 'fallback' :
 			break;
@@ -170,7 +172,10 @@ class Hooks implements
 			: self::getHtmlSnippet( $skin, $title_text, $file_url, $site_url );
 
 		switch ( $skin->getSkinName() ) {
+			case 'bouquet' :
 			case 'citizen' :
+			case 'dusk' :
+			case 'gamepress' :
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monaco' :
@@ -227,7 +232,10 @@ class Hooks implements
 		$sidebar_element = [];
 
 		switch ( $skin->getSkinName() ) {
+			case 'bouquet' :
 			case 'citizen' :
+			case 'dusk' :
+			case 'gamepress' :
 			case 'cologneblue' :
 			case 'modern' :
 			case 'monaco' :

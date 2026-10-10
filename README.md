@@ -41,7 +41,7 @@ or
 
 ## Compatibility
 
-This extension works from REL1_35 and has been tested up to MediaWiki versions `1.35.14`, `1.39.17`, `1.41.2`, `1.42.3`, `1.43.6`, `1.44.2`, and `1.45.1`.
+This extension works from REL1_35 and has been tested up to MediaWiki versions `1.35.14`, `1.39.17`, `1.41.2`, `1.42.3`, `1.43.9`, `1.44.2`, and `1.45.4`.
 
 ## Version history
 
@@ -112,3 +112,7 @@ This extension works from REL1_35 and has been tested up to MediaWiki versions `
 1.9.0
 
 * Refactoring classes, namespace and backward compatibility.
+
+1.10.0
+
+* Support added for Skins [Bouquet](https://www.mediawiki.org/wiki/Skin:Bouquet), [Dusk](https://www.mediawiki.org/wiki/Skin:Dusk), and [Gamepress](https://www.mediawiki.org/wiki/Skin:Gamepress).
