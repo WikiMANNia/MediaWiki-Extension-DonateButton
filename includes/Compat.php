@@ -15,16 +15,16 @@ class Compat {
 		// and before any use statements that make use of the namespaced names.
 
 		if ( class_exists( \Html::class ) && /* < 1.40 */
-			!class_exists( \MediaWiki\Html\Html::class, false ) ) {
+			!class_exists( 'MediaWiki\\Html\\Html', false ) ) {
 			class_alias(
 				\Html::class,
-				\MediaWiki\Html\Html::class );
+				'MediaWiki\\Html\\Html' );
 		}
 		if ( class_exists( \RequestContext::class ) && /* < 1.42 */
-			!class_exists( \MediaWiki\Context\RequestContext::class, false ) ) {
+			!class_exists( 'MediaWiki\\Context\\RequestContext', false ) ) {
 			class_alias(
 				\RequestContext::class,
-				\MediaWiki\Context\RequestContext::class );
+				'MediaWiki\\Context\\RequestContext' );
 		}
     }
 }

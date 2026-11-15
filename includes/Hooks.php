@@ -127,6 +127,7 @@ class Hooks implements
 				$out->addModuleStyles( 'ext.donatebutton.vector' );
 			break;
 			case 'apioutput' :
+			case 'cosmos' :
 			case 'dusk' :
 			case 'minerva' :
 			case 'fallback' :
@@ -148,6 +149,7 @@ class Hooks implements
 	 */
 	public function onSkinAfterPortlet( $skin, $portletName, &$html ) {
 
+		if ( $portletName !== 'donatebutton' )  return;
 		if ( !self::isActive() )  return;
 
 		// 1. get tool tip message
@@ -247,13 +249,15 @@ class Hooks implements
 				// Dirty hack for skin Timeless
 				$sidebar_element = [ $empty_item ];
 			break;
+			case 'cosmos' :
+				$sidebar_element = [ $txt_item ];
+			break;
 			default :
 				$sidebar_element = [ $txt_item ];
 			break;
 		}
 
 		$bar['donatebutton'] = $sidebar_element;
-
 	}
 
 	/*
